@@ -17,17 +17,9 @@ if (Test-Path $WgtName) {
 
 Write-Host "Packaging widget: $WgtName..."
 
-$tempDir = Join-Path $env:TEMP "AryPlusTV_Build"
-if (Test-Path $tempDir) { Remove-Item $tempDir -Recurse -Force }
-New-Item -ItemType Directory -Path $tempDir | Out-Null
-
-Copy-Item "config.xml", "index.html", "README.md" -Destination $tempDir
-Copy-Item "css", "js", "icons" -Destination $tempDir -Recurse
+node package_wgt.js
 
 $zipPath = Join-Path (Get-Location).Path $WgtName
-[System.IO.Compression.ZipFile]::CreateFromDirectory($tempDir, $zipPath)
-Remove-Item $tempDir -Recurse -Force
-
 $fileSize = (Get-Item $WgtName).Length
 Write-Host "SUCCESS: Package created -> $WgtName ($fileSize bytes)"
 
