@@ -101,3 +101,4 @@ $sdb = "C:\Users\Irfan\.tizen-extension-platform\server\sdktools\data\tools\sdb.
 
 - **No CSS `box-shadow` or `transform: scale()` on focused elements**: Heavy filter operations cause frame drops and stuttering on TV chipsets. Use solid `border: 3px solid #6bfe12` and background color shifts instead.
 - **Single-page inlining**: Scripts and styles are inlined in `index.html` via `rebuild_index.js` to eliminate relative path sandbox failures (`net::ERR_<unknown>`) under Tizen's `file:///` scheme.
+

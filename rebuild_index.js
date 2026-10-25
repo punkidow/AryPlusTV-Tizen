@@ -59,7 +59,6 @@ ${css}
                 <p id="episodes-desc">Series description goes here...</p>
                 <div class="episodes-meta-badges">
                     <span id="episodes-badge">0 Episodes</span>
-                    <span class="episodes-nav-hint">[▲/▼/◄/►] Select &bull; [ENTER] Play &bull; [BACK] Return to Wall</span>
                 </div>
             </div>
             <div id="episodes-pagination-bar" style="display: none;">
