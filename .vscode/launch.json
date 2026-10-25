@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Target: Samsung TV (Q60A)",
+            "type": "tizen-tv",
+            "request": "launch"
+        },
+        {
+            "name": "Target: Tizen TV Simulator",
+            "type": "tizen-tv",
+            "request": "launch",
+            "simulator": true
+        }
+    ]
+}
+

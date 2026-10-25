@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" 
+        xmlns:tizen="http://tizen.org/ns/widgets" 
+        id="http://aryplus.tv/aryplustv" 
+        version="1.0.0" 
+        viewmodes="maximized">
+    <tizen:application id="tL8G1A0X4A.AryPlusTV" 
+                       package="tL8G1A0X4A" 
+                       required_version="3.0"/>
+    <content src="index.html"/>
+    <feature name="http://tizen.org/feature/screen.size.normal.1080.1920"/>
+    <icon src="icon.png"/>
+    <name>AryPlusTV</name>
+    <tizen:profile name="tv-samsung"/>
+
+    <!-- Network permissions -->
+    <access origin="*" subdomains="true"/>
+    <tizen:allow-navigation href="*"/>
+
+    <tizen:privilege name="http://tizen.org/privilege/internet"/>
+    <tizen:privilege name="http://tizen.org/privilege/application.launch"/>
+    <tizen:privilege name="http://tizen.org/privilege/tv.inputdevice"/>
+
+    <tizen:setting screen-orientation="landscape" context-menu="enable" background-support="disable" encryption="disable" install-location="auto" hwkey-event="enable"/>
+</widget>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+ <profiles active="DevProfile" version="3.1">
+ <profile name="DevProfile">
+ <profileitem ca="" distributor="0" key="C:\Users\Irfan\Desktop\ary\author.p12" password="C:\Users\Irfan\Desktop\ary\author.pwd" rootca=""></profileitem>
+ <profileitem ca="C:/Users/Irfan/.tizen-extension-platform/server/sdktools/data/tools/certificate-generator/certificates/distributor/tizen-distributor-ca.cer" distributor="1" key="C:/Users/Irfan/.tizen-extension-platform/server/sdktools/data/tools/certificate-generator/certificates/distributor/tizen-distributor-signer.p12" password="C:/Users/Irfan/.tizen-extension-platform/server/sdktools/data/tools/certificate-generator/certificates/distributor/tizen-distributor-signer.pwd" rootca=""></profileitem>
+ <profileitem ca="" distributor="2" key="" password="" rootca=""></profileitem>
+ </profile>
+ </profiles>
