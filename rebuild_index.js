@@ -23,14 +23,10 @@ ${css}
         <aside id="sidebar">
             <div class="brand-container">
                 <img src="icons/aryplus_logo.png" alt="ARY Plus" class="brand-logo" onerror="this.src='icon.png'">
-                <span class="brand-badge">TV 6.0</span>
             </div>
             <nav class="nav-list" id="nav-list">
                 <!-- Dynamically populated: Dramas, Telefilms, Shows, Streams -->
             </nav>
-            <div class="sidebar-footer">
-                <span>[▲/▼] Navigate<br>[ENTER/►] Select<br>[◄/BACK] Sidebar</span>
-            </div>
         </aside>
 
         <!-- Main Viewport Area -->

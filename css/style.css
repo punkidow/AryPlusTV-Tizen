@@ -27,13 +27,13 @@ html, body {
 
 /* Clean, Fast Sidebar Navigation */
 #sidebar {
-    width: 220px;
+    width: 240px;
     height: 1080px;
     background: #0d1016;
     border-right: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     flex-direction: column;
-    padding: 35px 16px;
+    padding: 35px 18px;
     flex-shrink: 0;
     z-index: 10;
 }
@@ -41,50 +41,40 @@ html, body {
 .brand-container {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 0 8px;
-    margin-bottom: 40px;
+    justify-content: center;
+    padding: 0 10px;
+    margin-bottom: 45px;
 }
 
 .brand-logo {
-    height: 38px;
-    max-width: 125px;
+    height: 48px;
+    max-width: 180px;
     object-fit: contain;
-}
-
-.brand-badge {
-    font-size: 11px;
-    font-weight: 700;
-    background: #c3161c;
-    color: #ffffff;
-    padding: 2px 6px;
-    border-radius: 4px;
-    letter-spacing: 0.5px;
 }
 
 .nav-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
     flex: 1;
 }
 
 .nav-item {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 14px 16px;
-    border-radius: 10px;
+    gap: 22px; /* Distinct space between icon and text */
+    padding: 16px 20px;
+    border-radius: 12px;
     color: #8c93a3;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 600;
     cursor: pointer;
     border: 2px solid transparent;
 }
 
 .nav-item svg {
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
     fill: currentColor;
     flex-shrink: 0;
 }
@@ -100,16 +90,9 @@ html, body {
     border-color: #ffffff;
 }
 
-.sidebar-footer {
-    padding: 8px;
-    color: #555d6e;
-    font-size: 12px;
-    line-height: 1.5;
-}
-
 /* Main Content Area */
 #main-view {
-    width: 1700px;
+    width: 1680px;
     height: 1080px;
     display: flex;
     flex-direction: column;
@@ -163,14 +146,14 @@ html, body {
     color: #ffffff;
     border: 2px solid transparent;
     border-radius: 20px;
-    padding: 6px 14px;
-    font-size: 13px;
+    padding: 6px 16px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
 }
 
 .page-btn.disabled {
-    opacity: 0.3;
+    opacity: 0.25;
     cursor: default;
     pointer-events: none;
 }
@@ -184,13 +167,13 @@ html, body {
     font-size: 14px;
     font-weight: 600;
     color: #c9ced8;
-    min-width: 90px;
+    min-width: 100px;
     text-align: center;
 }
 
 /* Poster Wall Viewport */
 #poster-wall-viewport {
-    width: 1600px;
+    width: 1580px;
     height: 950px;
     overflow: hidden;
     position: relative;
@@ -198,9 +181,9 @@ html, body {
 
 #poster-wall {
     display: grid;
-    grid-template-columns: repeat(5, 296px);
+    grid-template-columns: repeat(5, 292px);
     grid-gap: 28px;
-    width: 1600px;
+    width: 1580px;
     transform: translateY(0px);
     will-change: transform;
     padding-bottom: 80px;
@@ -208,7 +191,7 @@ html, body {
 
 /* Poster Card: Strict ARY Plus 280x400 Poster Aspect Ratio */
 .poster-card {
-    width: 296px;
+    width: 292px;
     height: 480px;
     background-color: #141720;
     border-radius: 12px;
@@ -221,7 +204,7 @@ html, body {
 }
 
 .poster-card .poster-img-container {
-    width: 290px;
+    width: 286px;
     height: 400px;
     position: relative;
     background-color: #1a1e28;
@@ -254,7 +237,7 @@ html, body {
 }
 
 .poster-card .card-info {
-    width: 290px;
+    width: 286px;
     height: 74px;
     padding: 10px 14px;
     display: flex;
@@ -281,7 +264,6 @@ html, body {
     text-overflow: ellipsis;
 }
 
-/* Crisp, Solid TV Focus Highlight (No scale / blur jitter) */
 .poster-card.focused {
     border-color: #c3161c;
     background-color: #1f2433;

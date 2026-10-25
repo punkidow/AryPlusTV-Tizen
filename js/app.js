@@ -3,19 +3,18 @@
  * Features:
  * - 4 Primary Sections: Dramas, Telefilms, Shows, Streams
  * - Full Poster Wall Grid (5 columns, 280x400 poster ratio)
- * - Pagination HUD when item count anywhere goes beyond 30
+ * - Pagination: Exactly 20 items per page with reliable multi-page navigation
  * - Direct playback for Telefilms & Streams
- * - High-speed Episodes modal drawer for Dramas & Shows (with pagination)
- * - Solid TV focus indicators without layout re-flow / jitter
- * - Complete D-pad Remote Control (Up, Down, Left, Right, Enter, Back, Play/Pause, Seek)
- * - Crash-proof AVPlay Hardware acceleration
+ * - High-speed Episodes modal drawer for Dramas & Shows
+ * - Clean sidebar branding using only aryplus_logo
+ * - Complete D-pad Remote Control
  */
 const App = (function() {
     const API_BASE = 'https://be.aryplus.tv';
     const API_KEY = 'ak_37515186786306625012043079404171';
     const IMAGE_BASE = 'https://images.aryplus.tv/';
     const USER_COUNTRY = 'PK';
-    const PAGE_SIZE = 30;
+    const PAGE_SIZE = 20; // 20 per page
 
     // Sidebar navigation sections
     const SECTIONS = [
@@ -55,6 +54,7 @@ const App = (function() {
 
     // Navigation and Focus state
     let activeSectionIndex = 0; // 0: Dramas, 1: Telefilms, 2: Shows, 3: Streams
+    let currentCategoryPage = 1; // Dedicated tracked page number
     let focusArea = 'wall';      // 'sidebar', 'wall', 'pagination', 'episodes', 'episodes-pagination'
     let sidebarFocusIndex = 0;
 
@@ -70,7 +70,7 @@ const App = (function() {
     let currentEpisodeIndex = 0;
     let episodesPagination = { currentPage: 1, totalPages: 1, totalEpisodes: 0 };
     const EPISODES_GRID_COLUMNS = 4;
-    const EPISODES_PAGE_SIZE = 30;
+    const EPISODES_PAGE_SIZE = 20;
 
     // In-memory cache for instant switching
     const categoryCache = {};
@@ -94,7 +94,7 @@ const App = (function() {
             if (INITIAL_CATEGORIES.streams) categoryCache['streams_1'] = INITIAL_CATEGORIES.streams;
         }
 
-        switchSection(0);
+        switchSection(0, 1);
     }
 
     function renderSidebar() {
@@ -109,7 +109,7 @@ const App = (function() {
             item.innerHTML = `${sec.iconSvg}<span>${sec.title}</span>`;
             item.addEventListener('click', () => {
                 sidebarFocusIndex = idx;
-                switchSection(idx);
+                switchSection(idx, 1);
                 focusArea = 'wall';
                 currentCardIndex = 0;
                 updateFocus();
@@ -118,8 +118,9 @@ const App = (function() {
         });
     }
 
-    function switchSection(index, page = 1) {
+    function switchSection(index, page) {
         activeSectionIndex = index;
+        currentCategoryPage = typeof page === 'number' && page > 0 ? page : 1;
         const currentSec = SECTIONS[activeSectionIndex];
 
         SECTIONS.forEach((sec, idx) => {
@@ -133,22 +134,23 @@ const App = (function() {
         const secTitle = document.getElementById('section-title');
         if (secTitle) secTitle.textContent = currentSec.title;
 
-        loadCategoryData(currentSec.apiCategory, page);
+        loadCategoryData(currentSec.apiCategory, currentCategoryPage);
     }
 
-    async function loadCategoryData(apiCategory, page = 1) {
-        const cacheKey = `${apiCategory}_${page}`;
+    async function loadCategoryData(apiCategory, page) {
+        const pageNum = parseInt(page, 10) || 1;
+        const cacheKey = `${apiCategory}_${pageNum}`;
         const spinner = document.getElementById('spinner');
 
         if (categoryCache[cacheKey]) {
-            renderPosterWall(categoryCache[cacheKey]);
+            renderPosterWall(categoryCache[cacheKey], pageNum);
             return;
         }
 
         if (spinner) spinner.style.display = 'block';
 
         try {
-            const url = `${API_BASE}/api/series/byCatID/status/pg/${encodeURIComponent(apiCategory)}/${USER_COUNTRY}?limit=${PAGE_SIZE}&page=${page}`;
+            const url = `${API_BASE}/api/series/byCatID/status/pg/${encodeURIComponent(apiCategory)}/${USER_COUNTRY}?limit=${PAGE_SIZE}&page=${pageNum}`;
             const resp = await fetch(url, {
                 headers: {
                     'x-api-key': API_KEY,
@@ -159,22 +161,25 @@ const App = (function() {
             if (!resp.ok) throw new Error(`HTTP Error: ${resp.status}`);
             const data = await resp.json();
             categoryCache[cacheKey] = data;
-            renderPosterWall(data);
+            renderPosterWall(data, pageNum);
         } catch (err) {
             console.error('[App] Failed to fetch category:', apiCategory, err);
-            renderPosterWall({ series: [], pagination: { currentPage: 1, totalPages: 1, totalSeries: 0 } });
+            renderPosterWall({ series: [], pagination: { currentPage: pageNum, totalPages: 1, totalSeries: 0 } }, pageNum);
         } finally {
             if (spinner) spinner.style.display = 'none';
         }
     }
 
-    function renderPosterWall(data) {
+    function renderPosterWall(data, requestedPage) {
         currentCategoryItems = (data && Array.isArray(data.series)) ? data.series : [];
-        currentCategoryPagination = data && data.pagination ? data.pagination : {
-            currentPage: 1,
-            totalPages: Math.ceil(currentCategoryItems.length / PAGE_SIZE) || 1,
-            totalSeries: currentCategoryItems.length
+        
+        const apiPag = data && data.pagination ? data.pagination : {};
+        currentCategoryPagination = {
+            currentPage: apiPag.currentPage || requestedPage || currentCategoryPage || 1,
+            totalPages: apiPag.totalPages || Math.ceil((apiPag.totalSeries || currentCategoryItems.length) / PAGE_SIZE) || 1,
+            totalSeries: apiPag.totalSeries || currentCategoryItems.length
         };
+        currentCategoryPage = currentCategoryPagination.currentPage;
 
         const secCount = document.getElementById('section-count');
         if (secCount) {
@@ -201,7 +206,6 @@ const App = (function() {
             card.className = 'poster-card';
             card.id = `poster-card-${idx}`;
 
-            // Image selection: prioritize 280x400 imagePoster for proper vertical poster aspect ratio
             const imgPath = item.imagePoster || item.imageCoverBig || item.imageCoverDesktop || '';
             const fullImg = imgPath ? (imgPath.startsWith('http') ? imgPath : `${IMAGE_BASE}${imgPath}`) : 'icon.png';
 
@@ -340,8 +344,9 @@ const App = (function() {
     }
 
     // --- EPISODES DRAWER MANAGEMENT ---
-    async function openEpisodesDrawer(seriesItem, page = 1) {
+    async function openEpisodesDrawer(seriesItem, page) {
         activeSeries = seriesItem;
+        const pageNum = typeof page === 'number' && page > 0 ? page : 1;
         const modal = document.getElementById('episodes-view');
         const spinner = document.getElementById('spinner');
         if (spinner) spinner.style.display = 'block';
@@ -361,13 +366,14 @@ const App = (function() {
         focusArea = 'episodes';
         currentEpisodeIndex = 0;
 
-        await loadEpisodes(seriesItem._id, page);
+        await loadEpisodes(seriesItem._id, pageNum);
     }
 
-    async function loadEpisodes(seriesId, page = 1) {
-        const cacheKey = `${seriesId}_${page}`;
+    async function loadEpisodes(seriesId, page) {
+        const pageNum = typeof page === 'number' && page > 0 ? page : 1;
+        const cacheKey = `${seriesId}_${pageNum}`;
         if (episodesCache[cacheKey]) {
-            processEpisodesData(episodesCache[cacheKey], page);
+            processEpisodesData(episodesCache[cacheKey], pageNum);
             return;
         }
 
@@ -375,13 +381,13 @@ const App = (function() {
         if (spinner) spinner.style.display = 'block';
 
         try {
-            const url = `${API_BASE}/api/cdn/${seriesId}?page=${page}&limit=${EPISODES_PAGE_SIZE}`;
+            const url = `${API_BASE}/api/cdn/${seriesId}?page=${pageNum}&limit=${EPISODES_PAGE_SIZE}`;
             const resp = await fetch(url, {
                 headers: { 'x-api-key': API_KEY }
             });
             const data = await resp.json();
             episodesCache[cacheKey] = data;
-            processEpisodesData(data, page);
+            processEpisodesData(data, pageNum);
         } catch (e) {
             console.error('[App] Failed to load episodes:', e);
             episodesList = [];
@@ -419,7 +425,6 @@ const App = (function() {
             epCard.className = 'episode-card';
             epCard.id = `ep-card-${idx}`;
 
-            // Broadcast 16:9 thumbnail ratio
             const imgPath = ep.imagePath || ep.imagePathV2 || (activeSeries ? activeSeries.imageCoverBig : '');
             const fullImg = imgPath ? (imgPath.startsWith('http') ? imgPath : `${IMAGE_BASE}${imgPath}`) : 'icon.png';
 
@@ -502,7 +507,6 @@ const App = (function() {
         if (streamUrl) {
             const seriesTitle = (activeSeries ? activeSeries.title + ' - ' : '') + (ep.title || 'Episode');
             PlayerEngine.playStream(streamUrl, seriesTitle, false, () => {
-                // Safely restore Episodes View without freezing
                 restoreEpisodesView();
             });
         } else {
@@ -684,7 +688,7 @@ const App = (function() {
                 e.preventDefault();
                 if (focusArea === 'sidebar') {
                     if (sidebarFocusIndex !== activeSectionIndex) {
-                        switchSection(sidebarFocusIndex);
+                        switchSection(sidebarFocusIndex, 1);
                     }
                     focusArea = 'wall';
                     currentCardIndex = 0;
@@ -705,7 +709,7 @@ const App = (function() {
             case 13: // ENTER / OK
                 e.preventDefault();
                 if (focusArea === 'sidebar') {
-                    switchSection(sidebarFocusIndex);
+                    switchSection(sidebarFocusIndex, 1);
                     focusArea = 'wall';
                     currentCardIndex = 0;
                     updateFocus();
@@ -736,15 +740,19 @@ const App = (function() {
     }
 
     function handlePaginationClick() {
-        const curPage = currentCategoryPagination.currentPage;
-        const totalPages = currentCategoryPagination.totalPages;
+        const curPage = currentCategoryPagination.currentPage || currentCategoryPage || 1;
+        const totalPages = currentCategoryPagination.totalPages || 1;
 
-        if (paginationFocusBtn === 'prev' && curPage > 1) {
-            currentCardIndex = 0;
-            switchSection(activeSectionIndex, curPage - 1);
-        } else if (paginationFocusBtn === 'next' && curPage < totalPages) {
-            currentCardIndex = 0;
-            switchSection(activeSectionIndex, curPage + 1);
+        if (paginationFocusBtn === 'prev') {
+            if (curPage > 1) {
+                currentCardIndex = 0;
+                switchSection(activeSectionIndex, curPage - 1);
+            }
+        } else if (paginationFocusBtn === 'next') {
+            if (curPage < totalPages) {
+                currentCardIndex = 0;
+                switchSection(activeSectionIndex, curPage + 1);
+            }
         }
     }
 
@@ -826,16 +834,20 @@ const App = (function() {
     }
 
     function handleEpisodesPaginationClick() {
-        const cur = episodesPagination.currentPage;
-        const total = episodesPagination.totalPages;
+        const cur = episodesPagination.currentPage || 1;
+        const total = episodesPagination.totalPages || 1;
         if (!activeSeries) return;
 
-        if (episodesPaginationFocusBtn === 'prev' && cur > 1) {
-            currentEpisodeIndex = 0;
-            loadEpisodes(activeSeries._id, cur - 1);
-        } else if (episodesPaginationFocusBtn === 'next' && cur < total) {
-            currentEpisodeIndex = 0;
-            loadEpisodes(activeSeries._id, cur + 1);
+        if (episodesPaginationFocusBtn === 'prev') {
+            if (cur > 1) {
+                currentEpisodeIndex = 0;
+                loadEpisodes(activeSeries._id, cur - 1);
+            }
+        } else if (episodesPaginationFocusBtn === 'next') {
+            if (cur < total) {
+                currentEpisodeIndex = 0;
+                loadEpisodes(activeSeries._id, cur + 1);
+            }
         }
     }
 

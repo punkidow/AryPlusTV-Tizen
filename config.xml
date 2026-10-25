@@ -6,12 +6,12 @@
         viewmodes="maximized">
     <tizen:application id="tL8G1A0X4A.AryPlusTV" 
                        package="tL8G1A0X4A" 
-                       required_version="3.0"/>
+                       required_version="2.3"/>
     <content src="index.html"/>
     <feature name="http://tizen.org/feature/screen.size.normal.1080.1920"/>
     <icon src="icon.png"/>
     <name>AryPlusTV</name>
-    <tizen:profile name="tv-samsung"/>
+    <tizen:profile name="tv"/>
 
     <!-- Network permissions -->
     <access origin="*" subdomains="true"/>
