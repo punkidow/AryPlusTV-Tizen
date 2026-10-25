@@ -3574,10 +3574,20 @@ const App = (function() {
             if (prevBtn) {
                 if (currentCategoryPagination.currentPage <= 1) prevBtn.classList.add('disabled');
                 else prevBtn.classList.remove('disabled');
+                prevBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    paginationFocusBtn = 'prev';
+                    handlePaginationClick();
+                };
             }
             if (nextBtn) {
                 if (currentCategoryPagination.currentPage >= totalPages) nextBtn.classList.add('disabled');
                 else nextBtn.classList.remove('disabled');
+                nextBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    paginationFocusBtn = 'next';
+                    handlePaginationClick();
+                };
             }
         } else {
             pagBar.style.display = 'none';
@@ -3719,12 +3729,13 @@ const App = (function() {
         const total = (data && typeof data.totalEpisodes === 'number') ? data.totalEpisodes : (activeSeries ? activeSeries.episodeCount : episodesList.length);
         const calculatedTotalPages = (data && typeof data.totalPages === 'number') ? data.totalPages : Math.ceil(total / EPISODES_PAGE_SIZE) || 1;
 
+        const actualPage = parseInt(requestedPage, 10) || currentEpisodesPage || 1;
         episodesPagination = {
-            currentPage: (data && data.currentPage) ? data.currentPage : requestedPage,
+            currentPage: actualPage,
             totalPages: calculatedTotalPages,
             totalEpisodes: total
         };
-        currentEpisodesPage = episodesPagination.currentPage;
+        currentEpisodesPage = actualPage;
         renderEpisodesGrid();
     }
 
@@ -3793,10 +3804,20 @@ const App = (function() {
             if (prevBtn) {
                 if (episodesPagination.currentPage <= 1) prevBtn.classList.add('disabled');
                 else prevBtn.classList.remove('disabled');
+                prevBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    episodesPaginationFocusBtn = 'prev';
+                    handleEpisodesPaginationClick();
+                };
             }
             if (nextBtn) {
                 if (episodesPagination.currentPage >= totalPages) nextBtn.classList.add('disabled');
                 else nextBtn.classList.remove('disabled');
+                nextBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    episodesPaginationFocusBtn = 'next';
+                    handleEpisodesPaginationClick();
+                };
             }
         } else {
             pagBar.style.display = 'none';
