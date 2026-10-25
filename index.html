@@ -36,13 +36,13 @@ html, body {
 
 /* Clean, Fast Sidebar Navigation */
 #sidebar {
-    width: 240px;
+    width: 250px;
     height: 1080px;
     background: #0d1016;
     border-right: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     flex-direction: column;
-    padding: 35px 18px;
+    padding: 35px 20px;
     flex-shrink: 0;
     z-index: 10;
 }
@@ -57,7 +57,7 @@ html, body {
 
 .brand-logo {
     height: 48px;
-    max-width: 180px;
+    max-width: 190px;
     object-fit: contain;
 }
 
@@ -71,21 +71,28 @@ html, body {
 .nav-item {
     display: flex;
     align-items: center;
-    gap: 22px; /* Distinct space between icon and text */
     padding: 16px 20px;
     border-radius: 12px;
     color: #8c93a3;
-    font-size: 17px;
+    font-size: 18px;
     font-weight: 600;
     cursor: pointer;
     border: 2px solid transparent;
 }
 
-.nav-item svg {
+/* Explicit gap between SVG icon and label for Dramas, Telefilms, Shows, Streams */
+.nav-item .nav-icon {
     width: 26px;
     height: 26px;
-    fill: currentColor;
+    margin-right: 22px;
     flex-shrink: 0;
+    fill: currentColor;
+}
+
+.nav-item .nav-label {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
 }
 
 .nav-item.active {
@@ -94,14 +101,19 @@ html, body {
 }
 
 .nav-item.focused {
-    background-color: #c3161c;
-    color: #ffffff;
+    background-color: #6bfe12;
+    color: #000000;
     border-color: #ffffff;
+    font-weight: 700;
+}
+
+.nav-item.focused .nav-icon {
+    fill: #000000;
 }
 
 /* Main Content Area */
 #main-view {
-    width: 1680px;
+    width: 1670px;
     height: 1080px;
     display: flex;
     flex-direction: column;
@@ -168,8 +180,10 @@ html, body {
 }
 
 .page-btn.focused {
-    background: #c3161c;
+    background: #6bfe12;
+    color: #000000;
     border-color: #ffffff;
+    font-weight: 700;
 }
 
 #page-indicator {
@@ -182,7 +196,7 @@ html, body {
 
 /* Poster Wall Viewport */
 #poster-wall-viewport {
-    width: 1580px;
+    width: 1570px;
     height: 950px;
     overflow: hidden;
     position: relative;
@@ -190,9 +204,9 @@ html, body {
 
 #poster-wall {
     display: grid;
-    grid-template-columns: repeat(5, 292px);
+    grid-template-columns: repeat(5, 290px);
     grid-gap: 28px;
-    width: 1580px;
+    width: 1570px;
     transform: translateY(0px);
     will-change: transform;
     padding-bottom: 80px;
@@ -200,7 +214,7 @@ html, body {
 
 /* Poster Card: Strict ARY Plus 280x400 Poster Aspect Ratio */
 .poster-card {
-    width: 292px;
+    width: 290px;
     height: 480px;
     background-color: #141720;
     border-radius: 12px;
@@ -213,7 +227,7 @@ html, body {
 }
 
 .poster-card .poster-img-container {
-    width: 286px;
+    width: 284px;
     height: 400px;
     position: relative;
     background-color: #1a1e28;
@@ -241,12 +255,14 @@ html, body {
 }
 
 .poster-card .live-badge {
-    background: #c3161c;
-    border-color: #ff3b44;
+    background: #6bfe12;
+    color: #000000;
+    font-weight: 800;
+    border-color: #8cff4a;
 }
 
 .poster-card .card-info {
-    width: 286px;
+    width: 284px;
     height: 74px;
     padding: 10px 14px;
     display: flex;
@@ -274,12 +290,12 @@ html, body {
 }
 
 .poster-card.focused {
-    border-color: #c3161c;
-    background-color: #1f2433;
+    border-color: #6bfe12;
+    background-color: #1a2216;
 }
 
 .poster-card.focused .card-title {
-    color: #ff3b44;
+    color: #6bfe12;
 }
 
 /* Fullscreen Episodes View */
@@ -335,10 +351,10 @@ html, body {
 }
 
 #episodes-badge {
-    background: #c3161c;
-    color: #ffffff;
+    background: #6bfe12;
+    color: #000000;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 800;
     padding: 3px 10px;
     border-radius: 4px;
 }
@@ -421,12 +437,12 @@ html, body {
 }
 
 .episode-card.focused {
-    border-color: #c3161c;
-    background-color: #1f2433;
+    border-color: #6bfe12;
+    background-color: #1a2216;
 }
 
 .episode-card.focused .ep-title {
-    color: #ff3b44;
+    color: #6bfe12;
 }
 
 /* Fullscreen Video Player Layer */
@@ -468,8 +484,8 @@ html, body {
 
 #hud-status {
     font-size: 18px;
-    color: #ff333a;
-    font-weight: 600;
+    color: #6bfe12;
+    font-weight: 700;
     margin-top: 8px;
 }
 
@@ -485,7 +501,7 @@ html, body {
 #hud-progress-fill {
     height: 100%;
     width: 0%;
-    background-color: #c3161c;
+    background-color: #6bfe12;
 }
 
 #hud-controls {
@@ -515,7 +531,7 @@ html, body {
     margin-top: -30px;
     margin-left: -30px;
     border: 5px solid rgba(255, 255, 255, 0.15);
-    border-top-color: #c3161c;
+    border-top-color: #6bfe12;
     border-radius: 50%;
     animation: spin 0.75s linear infinite;
     display: none;
@@ -3302,8 +3318,8 @@ const PlayerEngine = (function() {
  * - Full Poster Wall Grid (5 columns, 280x400 poster ratio)
  * - Pagination: Exactly 20 items per page with reliable multi-page navigation
  * - Direct playback for Telefilms & Streams
- * - High-speed Episodes modal drawer for Dramas & Shows
- * - Clean sidebar branding using only aryplus_logo
+ * - High-speed Episodes modal drawer for Dramas & Shows with dedicated pagination
+ * - ARY Plus green brand accent (#6bfe12)
  * - Complete D-pad Remote Control
  */
 const App = (function() {
@@ -3321,7 +3337,7 @@ const App = (function() {
             title: 'Dramas',
             apiCategory: 'dramas',
             hasEpisodes: true,
-            iconSvg: '<svg viewBox="0 0 24 24"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/></svg>'
+            iconSvg: '<svg class="nav-icon" viewBox="0 0 24 24"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/></svg>'
         },
         {
             id: 'nav-telefilms',
@@ -3329,7 +3345,7 @@ const App = (function() {
             title: 'Telefilms',
             apiCategory: 'Telefilms',
             hasEpisodes: false, // direct play
-            iconSvg: '<svg viewBox="0 0 24 24"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>'
+            iconSvg: '<svg class="nav-icon" viewBox="0 0 24 24"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>'
         },
         {
             id: 'nav-shows',
@@ -3337,7 +3353,7 @@ const App = (function() {
             title: 'Shows',
             apiCategory: 'tv shows',
             hasEpisodes: true,
-            iconSvg: '<svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>'
+            iconSvg: '<svg class="nav-icon" viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>'
         },
         {
             id: 'nav-streams',
@@ -3345,13 +3361,13 @@ const App = (function() {
             title: 'Streams',
             apiCategory: 'live streaming',
             hasEpisodes: false, // direct play
-            iconSvg: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>'
+            iconSvg: '<svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>'
         }
     ];
 
     // Navigation and Focus state
     let activeSectionIndex = 0; // 0: Dramas, 1: Telefilms, 2: Shows, 3: Streams
-    let currentCategoryPage = 1; // Dedicated tracked page number
+    let currentCategoryPage = 1;
     let focusArea = 'wall';      // 'sidebar', 'wall', 'pagination', 'episodes', 'episodes-pagination'
     let sidebarFocusIndex = 0;
 
@@ -3365,6 +3381,7 @@ const App = (function() {
     let activeSeries = null;
     let episodesList = [];
     let currentEpisodeIndex = 0;
+    let currentEpisodesPage = 1; // Explicit stateful episode page number
     let episodesPagination = { currentPage: 1, totalPages: 1, totalEpisodes: 0 };
     const EPISODES_GRID_COLUMNS = 4;
     const EPISODES_PAGE_SIZE = 20;
@@ -3403,7 +3420,8 @@ const App = (function() {
             const item = document.createElement('div');
             item.className = 'nav-item' + (idx === activeSectionIndex ? ' active' : '');
             item.id = sec.id;
-            item.innerHTML = `${sec.iconSvg}<span>${sec.title}</span>`;
+            // Clean structure: nav-icon + gap + nav-label
+            item.innerHTML = `${sec.iconSvg}<span class="nav-label">${sec.title}</span>`;
             item.addEventListener('click', () => {
                 sidebarFocusIndex = idx;
                 switchSection(idx, 1);
@@ -3643,7 +3661,7 @@ const App = (function() {
     // --- EPISODES DRAWER MANAGEMENT ---
     async function openEpisodesDrawer(seriesItem, page) {
         activeSeries = seriesItem;
-        const pageNum = typeof page === 'number' && page > 0 ? page : 1;
+        currentEpisodesPage = typeof page === 'number' && page > 0 ? page : 1;
         const modal = document.getElementById('episodes-view');
         const spinner = document.getElementById('spinner');
         if (spinner) spinner.style.display = 'block';
@@ -3663,12 +3681,14 @@ const App = (function() {
         focusArea = 'episodes';
         currentEpisodeIndex = 0;
 
-        await loadEpisodes(seriesItem._id, pageNum);
+        await loadEpisodes(seriesItem._id, currentEpisodesPage);
     }
 
     async function loadEpisodes(seriesId, page) {
-        const pageNum = typeof page === 'number' && page > 0 ? page : 1;
+        const pageNum = parseInt(page, 10) || 1;
+        currentEpisodesPage = pageNum;
         const cacheKey = `${seriesId}_${pageNum}`;
+        
         if (episodesCache[cacheKey]) {
             processEpisodesData(episodesCache[cacheKey], pageNum);
             return;
@@ -3696,11 +3716,15 @@ const App = (function() {
 
     function processEpisodesData(data, requestedPage) {
         episodesList = (data && Array.isArray(data.episode)) ? data.episode : [];
+        const total = (data && typeof data.totalEpisodes === 'number') ? data.totalEpisodes : (activeSeries ? activeSeries.episodeCount : episodesList.length);
+        const calculatedTotalPages = (data && typeof data.totalPages === 'number') ? data.totalPages : Math.ceil(total / EPISODES_PAGE_SIZE) || 1;
+
         episodesPagination = {
-            currentPage: data.currentPage || requestedPage,
-            totalPages: data.totalPages || (data.totalEpisodes ? Math.ceil(data.totalEpisodes / EPISODES_PAGE_SIZE) : 1),
-            totalEpisodes: data.totalEpisodes || (activeSeries ? activeSeries.episodeCount : episodesList.length)
+            currentPage: (data && data.currentPage) ? data.currentPage : requestedPage,
+            totalPages: calculatedTotalPages,
+            totalEpisodes: total
         };
+        currentEpisodesPage = episodesPagination.currentPage;
         renderEpisodesGrid();
     }
 
@@ -3871,7 +3895,6 @@ const App = (function() {
         const wall = document.getElementById('poster-wall');
         if (!wall) return;
         const row = Math.floor(currentCardIndex / GRID_COLUMNS);
-        // Each poster card height is 480px + 28px gap = 508px
         const targetScroll = row > 1 ? (row - 1) * 508 : 0;
         wall.style.transform = `translateY(-${targetScroll}px)`;
     }
@@ -3880,7 +3903,6 @@ const App = (function() {
         const grid = document.getElementById('episodes-grid');
         if (!grid) return;
         const row = Math.floor(currentEpisodeIndex / EPISODES_GRID_COLUMNS);
-        // Each episode card height is 310px + 28px gap = 338px
         const targetScroll = row > 1 ? (row - 1) * 338 : 0;
         grid.style.transform = `translateY(-${targetScroll}px)`;
     }
@@ -4131,7 +4153,7 @@ const App = (function() {
     }
 
     function handleEpisodesPaginationClick() {
-        const cur = episodesPagination.currentPage || 1;
+        const cur = currentEpisodesPage || episodesPagination.currentPage || 1;
         const total = episodesPagination.totalPages || 1;
         if (!activeSeries) return;
 

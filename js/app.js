@@ -5,8 +5,8 @@
  * - Full Poster Wall Grid (5 columns, 280x400 poster ratio)
  * - Pagination: Exactly 20 items per page with reliable multi-page navigation
  * - Direct playback for Telefilms & Streams
- * - High-speed Episodes modal drawer for Dramas & Shows
- * - Clean sidebar branding using only aryplus_logo
+ * - High-speed Episodes modal drawer for Dramas & Shows with dedicated pagination
+ * - ARY Plus green brand accent (#6bfe12)
  * - Complete D-pad Remote Control
  */
 const App = (function() {
@@ -24,7 +24,7 @@ const App = (function() {
             title: 'Dramas',
             apiCategory: 'dramas',
             hasEpisodes: true,
-            iconSvg: '<svg viewBox="0 0 24 24"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/></svg>'
+            iconSvg: '<svg class="nav-icon" viewBox="0 0 24 24"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/></svg>'
         },
         {
             id: 'nav-telefilms',
@@ -32,7 +32,7 @@ const App = (function() {
             title: 'Telefilms',
             apiCategory: 'Telefilms',
             hasEpisodes: false, // direct play
-            iconSvg: '<svg viewBox="0 0 24 24"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>'
+            iconSvg: '<svg class="nav-icon" viewBox="0 0 24 24"><path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>'
         },
         {
             id: 'nav-shows',
@@ -40,7 +40,7 @@ const App = (function() {
             title: 'Shows',
             apiCategory: 'tv shows',
             hasEpisodes: true,
-            iconSvg: '<svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>'
+            iconSvg: '<svg class="nav-icon" viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>'
         },
         {
             id: 'nav-streams',
@@ -48,13 +48,13 @@ const App = (function() {
             title: 'Streams',
             apiCategory: 'live streaming',
             hasEpisodes: false, // direct play
-            iconSvg: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>'
+            iconSvg: '<svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>'
         }
     ];
 
     // Navigation and Focus state
     let activeSectionIndex = 0; // 0: Dramas, 1: Telefilms, 2: Shows, 3: Streams
-    let currentCategoryPage = 1; // Dedicated tracked page number
+    let currentCategoryPage = 1;
     let focusArea = 'wall';      // 'sidebar', 'wall', 'pagination', 'episodes', 'episodes-pagination'
     let sidebarFocusIndex = 0;
 
@@ -68,6 +68,7 @@ const App = (function() {
     let activeSeries = null;
     let episodesList = [];
     let currentEpisodeIndex = 0;
+    let currentEpisodesPage = 1; // Explicit stateful episode page number
     let episodesPagination = { currentPage: 1, totalPages: 1, totalEpisodes: 0 };
     const EPISODES_GRID_COLUMNS = 4;
     const EPISODES_PAGE_SIZE = 20;
@@ -106,7 +107,8 @@ const App = (function() {
             const item = document.createElement('div');
             item.className = 'nav-item' + (idx === activeSectionIndex ? ' active' : '');
             item.id = sec.id;
-            item.innerHTML = `${sec.iconSvg}<span>${sec.title}</span>`;
+            // Clean structure: nav-icon + gap + nav-label
+            item.innerHTML = `${sec.iconSvg}<span class="nav-label">${sec.title}</span>`;
             item.addEventListener('click', () => {
                 sidebarFocusIndex = idx;
                 switchSection(idx, 1);
@@ -346,7 +348,7 @@ const App = (function() {
     // --- EPISODES DRAWER MANAGEMENT ---
     async function openEpisodesDrawer(seriesItem, page) {
         activeSeries = seriesItem;
-        const pageNum = typeof page === 'number' && page > 0 ? page : 1;
+        currentEpisodesPage = typeof page === 'number' && page > 0 ? page : 1;
         const modal = document.getElementById('episodes-view');
         const spinner = document.getElementById('spinner');
         if (spinner) spinner.style.display = 'block';
@@ -366,12 +368,14 @@ const App = (function() {
         focusArea = 'episodes';
         currentEpisodeIndex = 0;
 
-        await loadEpisodes(seriesItem._id, pageNum);
+        await loadEpisodes(seriesItem._id, currentEpisodesPage);
     }
 
     async function loadEpisodes(seriesId, page) {
-        const pageNum = typeof page === 'number' && page > 0 ? page : 1;
+        const pageNum = parseInt(page, 10) || 1;
+        currentEpisodesPage = pageNum;
         const cacheKey = `${seriesId}_${pageNum}`;
+        
         if (episodesCache[cacheKey]) {
             processEpisodesData(episodesCache[cacheKey], pageNum);
             return;
@@ -399,11 +403,15 @@ const App = (function() {
 
     function processEpisodesData(data, requestedPage) {
         episodesList = (data && Array.isArray(data.episode)) ? data.episode : [];
+        const total = (data && typeof data.totalEpisodes === 'number') ? data.totalEpisodes : (activeSeries ? activeSeries.episodeCount : episodesList.length);
+        const calculatedTotalPages = (data && typeof data.totalPages === 'number') ? data.totalPages : Math.ceil(total / EPISODES_PAGE_SIZE) || 1;
+
         episodesPagination = {
-            currentPage: data.currentPage || requestedPage,
-            totalPages: data.totalPages || (data.totalEpisodes ? Math.ceil(data.totalEpisodes / EPISODES_PAGE_SIZE) : 1),
-            totalEpisodes: data.totalEpisodes || (activeSeries ? activeSeries.episodeCount : episodesList.length)
+            currentPage: (data && data.currentPage) ? data.currentPage : requestedPage,
+            totalPages: calculatedTotalPages,
+            totalEpisodes: total
         };
+        currentEpisodesPage = episodesPagination.currentPage;
         renderEpisodesGrid();
     }
 
@@ -574,7 +582,6 @@ const App = (function() {
         const wall = document.getElementById('poster-wall');
         if (!wall) return;
         const row = Math.floor(currentCardIndex / GRID_COLUMNS);
-        // Each poster card height is 480px + 28px gap = 508px
         const targetScroll = row > 1 ? (row - 1) * 508 : 0;
         wall.style.transform = `translateY(-${targetScroll}px)`;
     }
@@ -583,7 +590,6 @@ const App = (function() {
         const grid = document.getElementById('episodes-grid');
         if (!grid) return;
         const row = Math.floor(currentEpisodeIndex / EPISODES_GRID_COLUMNS);
-        // Each episode card height is 310px + 28px gap = 338px
         const targetScroll = row > 1 ? (row - 1) * 338 : 0;
         grid.style.transform = `translateY(-${targetScroll}px)`;
     }
@@ -834,7 +840,7 @@ const App = (function() {
     }
 
     function handleEpisodesPaginationClick() {
-        const cur = episodesPagination.currentPage || 1;
+        const cur = currentEpisodesPage || episodesPagination.currentPage || 1;
         const total = episodesPagination.totalPages || 1;
         if (!activeSeries) return;
 

@@ -27,13 +27,13 @@ html, body {
 
 /* Clean, Fast Sidebar Navigation */
 #sidebar {
-    width: 240px;
+    width: 250px;
     height: 1080px;
     background: #0d1016;
     border-right: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     flex-direction: column;
-    padding: 35px 18px;
+    padding: 35px 20px;
     flex-shrink: 0;
     z-index: 10;
 }
@@ -48,7 +48,7 @@ html, body {
 
 .brand-logo {
     height: 48px;
-    max-width: 180px;
+    max-width: 190px;
     object-fit: contain;
 }
 
@@ -62,21 +62,28 @@ html, body {
 .nav-item {
     display: flex;
     align-items: center;
-    gap: 22px; /* Distinct space between icon and text */
     padding: 16px 20px;
     border-radius: 12px;
     color: #8c93a3;
-    font-size: 17px;
+    font-size: 18px;
     font-weight: 600;
     cursor: pointer;
     border: 2px solid transparent;
 }
 
-.nav-item svg {
+/* Explicit gap between SVG icon and label for Dramas, Telefilms, Shows, Streams */
+.nav-item .nav-icon {
     width: 26px;
     height: 26px;
-    fill: currentColor;
+    margin-right: 22px;
     flex-shrink: 0;
+    fill: currentColor;
+}
+
+.nav-item .nav-label {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
 }
 
 .nav-item.active {
@@ -85,14 +92,19 @@ html, body {
 }
 
 .nav-item.focused {
-    background-color: #c3161c;
-    color: #ffffff;
+    background-color: #6bfe12;
+    color: #000000;
     border-color: #ffffff;
+    font-weight: 700;
+}
+
+.nav-item.focused .nav-icon {
+    fill: #000000;
 }
 
 /* Main Content Area */
 #main-view {
-    width: 1680px;
+    width: 1670px;
     height: 1080px;
     display: flex;
     flex-direction: column;
@@ -159,8 +171,10 @@ html, body {
 }
 
 .page-btn.focused {
-    background: #c3161c;
+    background: #6bfe12;
+    color: #000000;
     border-color: #ffffff;
+    font-weight: 700;
 }
 
 #page-indicator {
@@ -173,7 +187,7 @@ html, body {
 
 /* Poster Wall Viewport */
 #poster-wall-viewport {
-    width: 1580px;
+    width: 1570px;
     height: 950px;
     overflow: hidden;
     position: relative;
@@ -181,9 +195,9 @@ html, body {
 
 #poster-wall {
     display: grid;
-    grid-template-columns: repeat(5, 292px);
+    grid-template-columns: repeat(5, 290px);
     grid-gap: 28px;
-    width: 1580px;
+    width: 1570px;
     transform: translateY(0px);
     will-change: transform;
     padding-bottom: 80px;
@@ -191,7 +205,7 @@ html, body {
 
 /* Poster Card: Strict ARY Plus 280x400 Poster Aspect Ratio */
 .poster-card {
-    width: 292px;
+    width: 290px;
     height: 480px;
     background-color: #141720;
     border-radius: 12px;
@@ -204,7 +218,7 @@ html, body {
 }
 
 .poster-card .poster-img-container {
-    width: 286px;
+    width: 284px;
     height: 400px;
     position: relative;
     background-color: #1a1e28;
@@ -232,12 +246,14 @@ html, body {
 }
 
 .poster-card .live-badge {
-    background: #c3161c;
-    border-color: #ff3b44;
+    background: #6bfe12;
+    color: #000000;
+    font-weight: 800;
+    border-color: #8cff4a;
 }
 
 .poster-card .card-info {
-    width: 286px;
+    width: 284px;
     height: 74px;
     padding: 10px 14px;
     display: flex;
@@ -265,12 +281,12 @@ html, body {
 }
 
 .poster-card.focused {
-    border-color: #c3161c;
-    background-color: #1f2433;
+    border-color: #6bfe12;
+    background-color: #1a2216;
 }
 
 .poster-card.focused .card-title {
-    color: #ff3b44;
+    color: #6bfe12;
 }
 
 /* Fullscreen Episodes View */
@@ -326,10 +342,10 @@ html, body {
 }
 
 #episodes-badge {
-    background: #c3161c;
-    color: #ffffff;
+    background: #6bfe12;
+    color: #000000;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 800;
     padding: 3px 10px;
     border-radius: 4px;
 }
@@ -412,12 +428,12 @@ html, body {
 }
 
 .episode-card.focused {
-    border-color: #c3161c;
-    background-color: #1f2433;
+    border-color: #6bfe12;
+    background-color: #1a2216;
 }
 
 .episode-card.focused .ep-title {
-    color: #ff3b44;
+    color: #6bfe12;
 }
 
 /* Fullscreen Video Player Layer */
@@ -459,8 +475,8 @@ html, body {
 
 #hud-status {
     font-size: 18px;
-    color: #ff333a;
-    font-weight: 600;
+    color: #6bfe12;
+    font-weight: 700;
     margin-top: 8px;
 }
 
@@ -476,7 +492,7 @@ html, body {
 #hud-progress-fill {
     height: 100%;
     width: 0%;
-    background-color: #c3161c;
+    background-color: #6bfe12;
 }
 
 #hud-controls {
@@ -506,7 +522,7 @@ html, body {
     margin-top: -30px;
     margin-left: -30px;
     border: 5px solid rgba(255, 255, 255, 0.15);
-    border-top-color: #c3161c;
+    border-top-color: #6bfe12;
     border-radius: 50%;
     animation: spin 0.75s linear infinite;
     display: none;
